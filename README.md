@@ -1,0 +1,2 @@
+# Mojito
+Discord music bot
