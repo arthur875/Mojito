@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/arthur875/Mojito/issues"
   },
-  "homepage": "https://github.com/arthur875/Mojito#readme"
+  "homepage": "https://github.com/arthur875/Mojito#readme",
+  "dependencies": {
+    "@discordjs/opus": "^0.10.0",
+    "@discordjs/voice": "^0.18.0",
+    "discord.js": "^14.19.3",
+    "distube": "^5.0.7",
+    "sodium-native": "^5.0.3"
+  }
 }
