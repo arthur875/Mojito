@@ -1,0 +1,19 @@
+{
+  "name": "mojito",
+  "version": "1.0.0",
+  "description": "discord music bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthur875/Mojito.git"
+  },
+  "author": "Arthur",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arthur875/Mojito/issues"
+  },
+  "homepage": "https://github.com/arthur875/Mojito#readme"
+}
