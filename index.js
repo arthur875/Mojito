@@ -3,6 +3,7 @@ const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { token, prefix } = require('./config.json');
+const { YtDlpPlugin } = require('@distube/yt-dlp');
 
 const client = new Client({
     intents: [
@@ -16,7 +17,7 @@ const client = new Client({
 
 const distube = new DisTube(client, {
     emitNewSongOnly: true,
-    plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
+    plugins: [new SpotifyPlugin(), new SoundCloudPlugin(), new YtDlpPlugin()],
 });
 
 client.once('ready', () => {
@@ -28,6 +29,7 @@ client.on('messageCreate', async message => {
     if (!message.content.startsWith(prefix)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
+    console.log(`Arguments: \n ${args}`)
     const command = args.shift().toLowerCase();
 
     const vc = message.member.voice.channel;
@@ -74,6 +76,52 @@ client.on('messageCreate', async message => {
         distube.voices.leave(message.guild);
         message.channel.send('👋 Left the voice channel!');
     }
+
+    if (command == 'loop') {
+        let mode = args[0]
+        const queue = distube.getQueue(message);
+        if (!queue) return message.channel.send('Nothing is playing!')
+        
+        if (mode === 'once') {
+            const currentSong = queue.songs[0]
+            const replayOnce = () => {
+                queue.addToQueue([currentSong], 0)
+                message.channel.send(`🔂 Playing '${currentSong.name}' one more time`)
+                
+                // remove listener
+                distube.removeListener('finishSong', replayOnce)
+            }
+
+            // Register the replay function
+            distube.once('finishSong', (finishedQueue, song) => {
+                if (finishedQueue.id == queue.id && song.id == currentSong.id) {
+                    replayOnce()
+                }
+            })
+            // confirm to user
+             message.channel.send(`🔂 Will replay '${currentSong.name}' once after it finishes`);
+        } else {
+            // handle loop modes
+            let newMode
+
+            if (!mode || mode === 'off' || mode === '0') newMode = 0
+            else if (mode === 'song' || mode === '1') newMode = 1
+            else if (mode === 'queue' || mode === '2') newMode = 2
+            else return message.channel.send('❌ Valid options: off, song, queue, once')
+
+            queue.setRepeatMode(newMode)
+            message.channel.send(`🔄 Loop mode set to '${
+                                                        newMode === 0 ? 'off' 
+                                                        : newMode === 1 ? 'song' 
+                                                        : 'queue'
+                                                        }'`)
+
+        }
+
+
+        
+    }
+
     /*
 
     Updated filter command
