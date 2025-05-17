@@ -230,7 +230,7 @@ distube
 
 
     .on('empty', queue =>
-        queue.textChannel?.send('🚪 Voice channel is empty, leaving...')
+        queue.textChannel.send('🚪 Voice channel is empty, leaving...')
     )
     .on('searchResult', (message, results) => {
         let i = 0;
@@ -243,6 +243,6 @@ distube
     .on('searchCancel', message => message.channel.send('❌ Search cancelled'))
     .on('searchNoResult', message => message.channel.send('❌ No results found'))
     .on('searchInvalidAnswer', message => message.channel.send('❌ Invalid response'))
-    .on('finish', queue => queue.textChannel?.send('✅ Queue finished'));
+    .on('finish', queue => queue.textChannel.send('✅ Queue finished'));
 
 client.login(token);
