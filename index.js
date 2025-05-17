@@ -2,8 +2,11 @@ const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
-const { token, prefix, ytdlpOptions } = require('./config.json');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
+
+require('dotenv').config();
+const token = process.env.TOKEN;
+const prefix = process.env.PREFIX;
 
 const client = new Client({
     intents: [
@@ -20,16 +23,7 @@ const distube = new DisTube(client, {
     plugins: [
         new SpotifyPlugin(),
         new SoundCloudPlugin(),
-        new YtDlpPlugin({
-            update: true,
-            cookies: "./cookies.txt",
-            additionalArgs: [
-                '--force-ipv4', 
-                '--no-check-certificates',
-                '--no-cache-dir', // Avoid caching issues
-                '--cookies-from-browser', 'chrome' // Try browser cookies as fallback
-            ]
-        })
+        new YtDlpPlugin()
     ],
 });
 
