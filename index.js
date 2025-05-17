@@ -2,7 +2,7 @@ const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
-const { token, prefix } = require('./config.json');
+const { token, prefix, ytdlpOptions } = require('./config.json');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
 
 const client = new Client({
@@ -17,7 +17,20 @@ const client = new Client({
 
 const distube = new DisTube(client, {
     emitNewSongOnly: true,
-    plugins: [new SpotifyPlugin(), new SoundCloudPlugin(), new YtDlpPlugin()],
+    plugins: [
+        new SpotifyPlugin(),
+        new SoundCloudPlugin(),
+        new YtDlpPlugin({
+            update: true,
+            cookies: "./cookies.txt",
+            additionalArgs: [
+                '--force-ipv4', 
+                '--no-check-certificates',
+                '--no-cache-dir', // Avoid caching issues
+                '--cookies-from-browser', 'chrome' // Try browser cookies as fallback
+            ]
+        })
+    ],
 });
 
 client.once('ready', () => {
@@ -33,6 +46,40 @@ client.on('messageCreate', async message => {
     const command = args.shift().toLowerCase();
 
     const vc = message.member.voice.channel;
+
+    if (command === 'help') {
+        const helpEmbed = {
+            color: 0x36d1dc,
+            title: '🎵 Mojito Music Bot Commands 🎵',
+            description: `All commands start with prefix: \`${prefix}\``,
+            fields: [
+                {
+                    name: '**Music Controls**',
+                    value: 
+                        '`play [song/url]` - Plays a song from YouTube, Spotify, or SoundCloud\n' +
+                        '`stop` - Stops the current song and clears queue\n' +
+                        '`skip` - Skips to the next song\n' +
+                        '`pause` - Pauses the current song\n' +
+                        '`resume` - Resumes playback if paused\n' +
+                        '`leave` - Disconnects the bot from voice channel'
+                },
+                {
+                    name: '**Queue Management**',
+                    value: 
+                        '`queue` - Shows the current song queue\n' +
+                        '`loop [off|song|queue|once]` - Sets loop mode\n' +
+                        '• `off/0` - Disable looping\n' +
+                        '• `song/1` - Loop current song\n' + 
+                        '• `queue/2` - Loop entire queue\n' +
+                        '• `once` - Replay current song once'
+                }
+            ],
+            footer: {
+                text: 'Made with ❤️ | Mojito Music Bot'
+            }
+        };
+        message.channel.send({ embeds: [helpEmbed] });
+    }
 
     if (command === 'play') {
         if (!vc) return message.channel.send('You need to be in a voice channel!');
