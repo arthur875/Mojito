@@ -3,7 +3,7 @@ const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
-
+const keep_alive = require('./keep_alive.js')
 require('dotenv').config();
 const token = process.env.TOKEN;
 const prefix = process.env.PREFIX;
