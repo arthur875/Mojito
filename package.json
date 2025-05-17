@@ -24,6 +24,7 @@
     "@distube/yt-dlp": "^2.0.1",
     "discord.js": "^14.19.3",
     "distube": "^5.0.7",
+    "dotenv": "^16.5.0",
     "sodium-native": "^5.0.3"
   }
 }
