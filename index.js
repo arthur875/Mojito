@@ -189,13 +189,13 @@ const status = (queue) =>
 // Events
 distube
     .on('playSong', (queue, song) =>
-        queue.textChannel?.send(`🎶 Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`)
+        queue.textChannel.send(`🎶 Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`)
     )
     .on('addSong', (queue, song) =>
-        queue.textChannel?.send(`➕ Added \`${song.name}\` - \`${song.formattedDuration}\` to the queue by ${song.user}`)
+        queue.textChannel.send(`➕ Added \`${song.name}\` - \`${song.formattedDuration}\` to the queue by ${song.user}`)
     )
     .on('addList', (queue, playlist) =>
-        queue.textChannel?.send(`📀 Added playlist \`${playlist.name}\` (${playlist.songs.length} songs)\n${status(queue)}`)
+        queue.textChannel.send(`📀 Added playlist \`${playlist.name}\` (${playlist.songs.length} songs)\n${status(queue)}`)
     )
 
 .on('error', (channel, error) => {
