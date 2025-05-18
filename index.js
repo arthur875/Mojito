@@ -15,7 +15,6 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.MessageContent
     ],
-    partials: [Partials.Channel],
 });
 
 const distube = new DisTube(client, {
@@ -77,10 +76,35 @@ client.on('messageCreate', async message => {
 
     if (command === 'play') {
         if (!vc) return message.channel.send('You need to be in a voice channel!');
-        distube.play(vc, args.join(' '), {
+        const options = {
             textChannel: message.channel,
             member: message.member,
-        });
+        };
+        
+        // Log when song is requested
+        console.log(`[${new Date().toISOString()}] Song requested: ${args.join(' ')}`);
+        
+        distube.play(vc, args.join(' '), options);
+        
+        // Listen for song playback progress
+        const progressListener = (queue) => {
+            if (queue.songs && queue.songs[0]) {
+            const song = queue.songs[0];
+            const progress = queue.currentTime;
+            const duration = song.duration;
+            const percent = Math.floor((progress / duration) * 100);
+            console.log(`[${new Date().toISOString()}] Playing: ${song.name} | ${Math.floor(progress)}s/${duration}s (${percent}%)`);
+            }
+        };
+        
+        // Log progress every 15 seconds
+        const progressInterval = setInterval(() => {
+            const queue = distube.getQueue(message.guild);
+            if (queue) progressListener(queue);
+            else clearInterval(progressInterval);
+        }, 15000);
+        
+        // Clear interval when song ends
     }
 
     if (command === 'stop') {
