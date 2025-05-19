@@ -1,8 +1,9 @@
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
+const chalk = require('chalk').default;
 const keep_alive = require('./keep_alive.js')
 require('dotenv').config();
 const token = process.env.TOKEN;
@@ -82,18 +83,29 @@ client.on('messageCreate', async message => {
         };
         
         // Log when song is requested
-        console.log(`[${new Date().toISOString()}] Song requested: ${args.join(' ')}`);
+        console.log(`[${chalk.green(new Date().toISOString())}] Song requested: ${args.join(' ')}`);
         
         distube.play(vc, args.join(' '), options);
-        
+
         // Listen for song playback progress
+        let progressBar = ''
         const progressListener = (queue) => {
             if (queue.songs && queue.songs[0]) {
             const song = queue.songs[0];
             const progress = queue.currentTime;
             const duration = song.duration;
             const percent = Math.floor((progress / duration) * 100);
-            console.log(`[${new Date().toISOString()}] Playing: ${song.name} | ${Math.floor(progress)}s/${duration}s (${percent}%)`);
+            // Round percent to the nearest multiple of 5
+            const roundedPercent = Math.round(percent / 5) * 5;
+            if (percent != 100 && roundedPercent % 5 == 0)  {
+                progressBar = progressBar.concat('█');
+            } else {
+                progressBar = '';
+            }
+            console.log(`[${chalk.yellowBright(new Date().toISOString())}] Playing: ${chalk.cyan(song.name)} | ${Math.floor(progress)}s/${duration}s (${percent}%)
+                         \n|${chalk.greenBright(progressBar)}|`);
+            
+            
             }
         };
         
@@ -102,7 +114,7 @@ client.on('messageCreate', async message => {
             const queue = distube.getQueue(message.guild);
             if (queue) progressListener(queue);
             else clearInterval(progressInterval);
-        }, 15000);
+        }, 5000);
         
         // Clear interval when song ends
     }

@@ -22,6 +22,7 @@
     "@distube/soundcloud": "^2.0.4",
     "@distube/spotify": "^2.0.2",
     "@distube/yt-dlp": "^2.0.1",
+    "chalk": "^5.4.1",
     "discord.js": "^14.19.3",
     "distube": "^5.0.7",
     "dotenv": "^16.5.0",
