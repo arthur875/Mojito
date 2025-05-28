@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, escapeBulletedList } = require('discord.js');
 const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
@@ -89,6 +89,8 @@ client.on('messageCreate', async message => {
 
         // Listen for song playback progress
         let progressBar = ''
+        let lastPercent = -1
+        let trigger = false
         const progressListener = (queue) => {
             if (queue.songs && queue.songs[0]) {
             const song = queue.songs[0];
@@ -97,15 +99,35 @@ client.on('messageCreate', async message => {
             const percent = Math.floor((progress / duration) * 100);
             // Round percent to the nearest multiple of 5
             const roundedPercent = Math.round(percent / 5) * 5;
-            if (percent != 100 && roundedPercent % 5 == 0)  {
-                progressBar = progressBar.concat('█');
-            } else {
-                progressBar = '';
+            // Only update progress bar when percent is greater than 1% and is a multiple of 5
+            console.log(`lastPercent registered: ${lastPercent} \n actual percentage: ${percent}`)
+            
+            if (percent % 5 === 0 && percent != 0 && !trigger) {
+              progressBar = progressBar.concat('█');
+              trigger = true;
+              lastPercent = percent;
             }
+            if (lastPercent != percent) {
+              trigger = false;
+            }
+            if (percent === 100) {
+                
+                progressBar = ''; // Reset when complete
+            
+            }
+            /*
+            // Clear previous console lines more clearly
+            const clearPreviousLines = (numLines = 3) => {
+                // ANSI escape sequence to move up and clear lines
+                for (let i = 0; i < numLines; i++) {
+                    process.stdout.write('\x1b[1A\x1b[K');
+                }
+            };
+            
+            clearPreviousLines(); // Clear 3 previous lines
+            */
             console.log(`[${chalk.yellowBright(new Date().toISOString())}] Playing: ${chalk.cyan(song.name)} | ${Math.floor(progress)}s/${duration}s (${percent}%)
                          \n|${chalk.greenBright(progressBar)}|`);
-            
-            
             }
         };
         
