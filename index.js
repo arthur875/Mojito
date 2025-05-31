@@ -117,7 +117,7 @@ client.on('messageCreate', async message => {
             }
             
             // Clear previous console lines more clearly
-            const clearPreviousLines = (numLines = 3) => {
+            const clearPreviousLines = (numLines = 5) => {
                 // ANSI escape sequence to move up and clear lines
                 for (let i = 0; i < numLines; i++) {
                     process.stdout.write('\x1b[1A\x1b[K');
