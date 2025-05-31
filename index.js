@@ -115,7 +115,7 @@ client.on('messageCreate', async message => {
                 progressBar = ''; // Reset when complete
             
             }
-            /*
+            
             // Clear previous console lines more clearly
             const clearPreviousLines = (numLines = 3) => {
                 // ANSI escape sequence to move up and clear lines
@@ -125,7 +125,7 @@ client.on('messageCreate', async message => {
             };
             
             clearPreviousLines(); // Clear 3 previous lines
-            */
+            
             console.log(`[${chalk.yellowBright(new Date().toISOString())}] Playing: ${chalk.cyan(song.name)} | ${Math.floor(progress)}s/${duration}s (${percent}%)
                          \n|${chalk.greenBright(progressBar)}|`);
             }
