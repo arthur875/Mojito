@@ -30,7 +30,12 @@ const distube = new DisTube(client, {
     ],
 });
 
+// Global volume variable
 let volume = 50;
+
+// Make these instances accessible to slash commands
+client.distube = distube;
+client.globalVolume = volume;
 
 client.once('ready', () => {
     console.log(`✅ Logged in as ${client.user.tag}`);
@@ -126,8 +131,7 @@ client.on('messageCreate', async message => {
         message.channel.send({ embeds: [helpEmbed] });
     }
 
-    
-    if (command === 'volume') {
+      if (command === 'volume') {
         volume = parseInt(args[0], 10)
         if (volume < 0 || volume > 100) {
             return message.channel.send(`can't set volume. Please write a number in range of (0, 100)`)
@@ -141,7 +145,9 @@ client.on('messageCreate', async message => {
         queue.setVolume(volume);
         console.log(`After setting: Queue volume is ${queue.volume}`);
 
+        // Update both the local and global volume variables
         distube.setVolume(message.guild, volume)
+        client.globalVolume = volume; // Update the global volume in the client
         message.channel.send(`volume set to ${volume}%`)
     }
 
@@ -317,9 +323,6 @@ const status = (queue) =>
 // Events
 distube
     .on('playSong', (queue, song) =>{
-        if (queue.volume !== volume) {
-            queue.setVolume(volume)
-        }
         queue.textChannel.send(`🎶 Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`)
     })
     .on('addSong', (queue, song) =>
