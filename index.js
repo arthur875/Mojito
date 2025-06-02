@@ -30,6 +30,8 @@ const distube = new DisTube(client, {
     ],
 });
 
+let volume = 50;
+
 client.once('ready', () => {
     console.log(`✅ Logged in as ${client.user.tag}`);
 });
@@ -124,11 +126,31 @@ client.on('messageCreate', async message => {
         message.channel.send({ embeds: [helpEmbed] });
     }
 
+    
+    if (command === 'volume') {
+        volume = parseInt(args[0], 10)
+        if (volume < 0 || volume > 100) {
+            return message.channel.send(`can't set volume. Please write a number in range of (0, 100)`)
+        }
+        const queue = distube.getQueue(message);
+        console.log(queue)
+        if (!queue) {
+            return message.channel.send('Nothing is playing!');
+        }
+        console.log(`Before setting: Queue volume is ${queue.volume}`);
+        queue.setVolume(volume);
+        console.log(`After setting: Queue volume is ${queue.volume}`);
+
+        distube.setVolume(message.guild, volume)
+        message.channel.send(`volume set to ${volume}%`)
+    }
+
     if (command === 'play') {
         if (!vc) return message.channel.send('You need to be in a voice channel!');
         const options = {
             textChannel: message.channel,
             member: message.member,
+            volume: volume,
         };
         
         // Log when song is requested
@@ -224,6 +246,8 @@ client.on('messageCreate', async message => {
         message.channel.send('👋 Left the voice channel!');
     }
 
+
+
     if (command == 'loop') {
         let mode = args[0]
         const queue = distube.getQueue(message);
@@ -288,14 +312,16 @@ client.on('messageCreate', async message => {
 */
 });
 // Helper status embed
-const status = (queue) =>
-  `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.names.join(', ') || 'Off'}\` | Loop: \`${queue.repeatMode ? (queue.repeatMode === 2 ? 'All Queue' : 'This Song') : 'Off'}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
-
+const status = (queue) => 
+    `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.names.join(', ') || 'Off'}\` | Loop: \`${queue.repeatMode ? (queue.repeatMode === 2 ? 'All Queue' : 'This Song') : 'Off'}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
 // Events
 distube
-    .on('playSong', (queue, song) =>
+    .on('playSong', (queue, song) =>{
+        if (queue.volume !== volume) {
+            queue.setVolume(volume)
+        }
         queue.textChannel.send(`🎶 Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`)
-    )
+    })
     .on('addSong', (queue, song) =>
         queue.textChannel.send(`➕ Added \`${song.name}\` - \`${song.formattedDuration}\` to the queue by ${song.user}`)
     )
