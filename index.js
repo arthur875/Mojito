@@ -3,6 +3,7 @@ const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
+const voice = require('@discordjs/voice');
 const chalk = require('chalk').default;
 const keep_alive = require('./keep_alive.js')
 require('dotenv').config();
@@ -214,7 +215,6 @@ client.on('messageCreate', async message => {
                                                         : newMode === 1 ? 'song' 
                                                         : 'queue'
                                                         }'`)
-
         }
 
 
@@ -301,6 +301,9 @@ distube
     .on('searchCancel', message => message.channel.send('❌ Search cancelled'))
     .on('searchNoResult', message => message.channel.send('❌ No results found'))
     .on('searchInvalidAnswer', message => message.channel.send('❌ Invalid response'))
-    .on('finish', queue => queue.textChannel.send('✅ Queue finished'));
+    .on('finish', queue =>{
+        distube.voices.get(queue.id).leave();
+        queue.textChannel.send('✅ Queue finished')
+    })
 
 client.login(token);
