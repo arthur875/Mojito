@@ -93,24 +93,23 @@ client.on('messageCreate', async message => {
         let lastPercent = -1
         let trigger = false
         const progressListener = (queue) => {
+            
             if (queue.songs && queue.songs[0]) {
             const song = queue.songs[0];
             const progress = queue.currentTime;
             const duration = song.duration;
             const percent = Math.floor((progress / duration) * 100);
-            // Round percent to the nearest multiple of 5
-            const roundedPercent = Math.round(percent / 5) * 5;
-            // Only update progress bar when percent is greater than 1% and is a multiple of 5
-            console.log(`lastPercent registered: ${lastPercent} \n actual percentage: ${percent}`)
-            
-            if (percent % 5 === 0 && percent != 0 && !trigger) {
-              progressBar = progressBar.concat('█');
-              trigger = true;
-              lastPercent = percent;
-            }
+            progressBar = '|' + '█'.repeat(percent) + ' '.repeat(100 - percent) + '|'
+
             if (lastPercent != percent) {
               trigger = false;
             }
+            
+            if (percent != 0 && !trigger) {
+              trigger = true;
+              lastPercent = percent;
+            }
+
             if (percent === 100) {
                 
                 progressBar = ''; // Reset when complete
@@ -128,7 +127,7 @@ client.on('messageCreate', async message => {
             clearPreviousLines(); // Clear 3 previous lines
             
             console.log(`[${chalk.yellowBright(new Date().toISOString())}] Playing: ${chalk.cyan(song.name)} | ${Math.floor(progress)}s/${duration}s (${percent}%)
-                         \n|${chalk.greenBright(progressBar)}|`);
+                         \n${chalk.greenBright(progressBar)}`);
             }
         };
         
