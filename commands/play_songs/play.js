@@ -57,7 +57,7 @@ module.exports = {
                     const progress = queue.currentTime;
                     const duration = song.duration;
                     const percent = Math.floor((progress / duration) * 100);
-                    progressBar = '|' + '█'.repeat(percent) + ' '.repeat(100 - percent) + '|'
+                    progressBar = '|' + '█'.repeat(percent) + ' '.repeat(Math.min(percent, 100)) + '|'
 
                     if (lastPercent != percent) {
                         trigger = false;
