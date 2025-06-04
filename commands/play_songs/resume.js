@@ -9,7 +9,7 @@ module.exports = {
             const { client } = interaction
             distube = client.distube
             
-            interaction.deferReply()
+            await interaction.deferReply()
 
             try {
                 await distube.resume(interaction)
