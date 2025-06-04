@@ -2,9 +2,24 @@ const { REST, Routes } = require('discord.js')
 const fs = require('node:fs')
 const path = require('node:path')
 require('dotenv').config()
+
+// Get environment variables and validate them
 const token = process.env.TOKEN
 const prefix = process.env.PREFIX
 const clientId = process.env.clientId
+
+// Validate required environment variables
+if (!token) {
+    console.error('❌ Missing TOKEN in environment variables. Please check your .env file.')
+    process.exit(1)
+}
+
+if (!clientId) {
+    console.error('❌ Missing clientId in environment variables. Please check your .env file.')
+    process.exit(1)
+}
+
+console.log(`✅ Using Discord bot client ID: ${clientId}`)
 
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
