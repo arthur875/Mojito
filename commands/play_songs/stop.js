@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,17 +8,18 @@ module.exports = {
         const { client } = interaction
         const distube = client.distube
 
-        await interaction.deferReply()
-
+        await interaction.deferReply()        
         try {
             await distube.stop(interaction)
             await interaction.editReply('⏹️ Stopped the song!')
         } catch (error) {
+            console.error(`Error in stop command: ${error}`)
+            
             if (error.errorCode === 'NO_QUEUE') {
-                await interaction.editReply(`Couldn't find current queue`)
+                await interaction.editReply({content: `Couldn't find current queue`, flags: MessageFlags.Ephemeral})
+            } else {
+                await interaction.editReply({content: `❌ There was an error during stop: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`, flags: MessageFlags.Ephemeral})
             }
-            console.error('Error skipping song:', error)
-            await interaction.editReply('An error occurred while trying to stop the song.')
         }
     }
 }

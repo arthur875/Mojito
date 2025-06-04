@@ -95,7 +95,7 @@ module.exports = {
             }, 5000);
         
         } catch (error) {
-            console.error('Error in play command:', error);
+            console.error(`Error in play command: ${error}`, MessageFlags.Ephemeral);
             
             // If we've already replied, use followUp instead of editReply
             if (interaction.replied) {

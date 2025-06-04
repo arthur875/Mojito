@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,7 +15,7 @@ module.exports = {
                 await interaction.editReply('👋 Left the voice channel!')
             } catch (error) {
                 console.error(`there was an error during the execution of this command: ${error}`)
-                await interaction.editReply('there was an error during the execution of leave')
+                await interaction.editReply('there was an error during the execution of leave', MessageFlags.Ephemeral)
             }
         }
 }

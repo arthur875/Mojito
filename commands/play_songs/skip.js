@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,20 +8,20 @@ module.exports = {
         const { client } = interaction
         const distube = client.distube
 
-        await interaction.deferReply()
-
+        await interaction.deferReply()        
         try {
             await distube.skip(interaction)
             await interaction.editReply('Skipped to the next song!')
         } catch (error) {
+            console.error(`Error in skip command: ${error}`)
+            
             if (error.errorCode === 'NO_UP_NEXT') {
-                await interaction.editReply('There are no more songs in the queue!')
+                await interaction.editReply({content: 'There are no more songs in the queue!', flags: MessageFlags.Ephemeral})
             }
-            if (error.errorCode === 'NO_QUEUE') {
-                await interaction.editReply(`Couldn't find current queue`)
+            else if (error.errorCode === 'NO_QUEUE') {
+                await interaction.editReply({content: `Couldn't find current queue`, flags: MessageFlags.Ephemeral})
             } else {
-                console.error('Error skipping song:', error)
-                await interaction.editReply('An error occurred while trying to skip the song.')
+                await interaction.editReply({content: `❌ There was an error during skip: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`, flags: MessageFlags.Ephemeral})
             }
         }
     }
