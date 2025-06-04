@@ -2,22 +2,20 @@ const { SlashCommandBuilder } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('pause')
-        .setDescription('pause the current song.'),
+        .setName('leave')
+        .setDescription('leaves the current voice channel'),
         async execute(interaction) {
-            
             const { client } = interaction
-            distube = client.distube
+            const distube = client.distube
 
             await interaction.deferReply()
 
             try {
-                await distube.pause(interaction)
-                await interaction.editReply('⏸️ paused the song.')
+                await distube.leave()
+                await interaction.editReply('👋 Left the voice channel!')
             } catch (error) {
                 console.error(`there was an error during the execution of this command: ${error}`)
-                await interaction.editReply('there was an error during the execution of pause')
+                await interaction.editReply('there was an error during the execution of leave')
             }
-
         }
 }
