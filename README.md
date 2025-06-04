@@ -1,5 +1,8 @@
-# Mojito
-A feature-rich Discord music bot that plays music from YouTube, Spotify, and SoundCloud
+# Mojito 🍹
+
+A feature-rich Discord music bot that plays music from YouTube, Spotify, and SoundCloud with both prefix and slash commands.
+
+![Bot Logo](assets/images/bot_profile_image.png)
 
 ## Features
 
@@ -13,7 +16,8 @@ A feature-rich Discord music bot that plays music from YouTube, Spotify, and Sou
 - ⏯️ **Comprehensive Playback Controls**: Full suite of commands (play, pause, resume, skip, stop)
 - 🎚️ **Volume Control**: Adjust volume from 0-100% to suit your environment
 - 🖥️ **Visual Playback Tracking**: Real-time progress bar in console shows song position
-- 🎮 **Rich Embeds**: Beautiful Discord embeds with thumbnails and formatting for the help command
+- 🎮 **Dual Command Systems**: Supports both traditional prefix commands and modern slash commands
+- 🎨 **Rich Embeds**: Beautiful Discord embeds with thumbnails and formatting
 
 ## Commands
 
@@ -39,7 +43,11 @@ All commands start with the configurable prefix (default: `!`)
 - `!help` - Displays help information with embedded images
 
 ### Slash Commands
+Modern Discord slash commands with autocomplete:
+
 - `/play [query]` - Plays a song from YouTube, Spotify, or SoundCloud
+- `/skip` - Skips to the next song
+- `/stop` - Stops playback and clears the queue
 - `/volume [intensity]` - Sets the volume (0-100)
 - `/help` - Provides documentation on how to use the bot with rich embed visuals
 
@@ -50,10 +58,12 @@ All commands start with the configurable prefix (default: `!`)
    git clone https://github.com/arthur875/Mojito.git
    cd Mojito
    ```
+
 2. Install dependencies:
    ```
    npm install
    ```
+
 3. Create a `.env` file with the following:
    ```
    TOKEN=your_discord_bot_token
@@ -62,27 +72,45 @@ All commands start with the configurable prefix (default: `!`)
    ```
    > Note: The `.env` file variables are case-sensitive. Make sure to use `clientId` exactly as shown.
    
-4. Make sure you have the following directories structure:
+4. Make sure you have the following directory structure:
    ```
    assets/
      images/
        bot_profile_image.png
        bot_profile_wallpaper_image.png
+   commands/
+     play_songs/
+       play.js
+       skip.js
+       stop.js
+       volume.js
+     utility/
+       help.js
    ```
-   > These images are needed for the help command embed visuals.
+   > The images are needed for rich embed visuals in help commands.
 
-5. Deploy slash commands:
+5. Deploy slash commands to your Discord server:
    ```
    node deploy.js
    ```
+
 6. Start the bot:
    ```
    node index.js
    ```
    
+## Console Features
+
+The bot includes a real-time console display showing:
+
+- Current song progress with a visual progress bar
+- Song playback status with timestamps
+- Connection status and error reports
+- Command logs with timestamps
+
 ## Hosting Notes
 
-The bot includes a simple HTTP server in `keep_alive.js` which helps with keeping the bot running on certain hosting platforms that require regular HTTP traffic. This server runs on port 8080 and responds with "I'm alive :D" to any incoming requests.
+The bot includes a simple HTTP server in `keep_alive.js` which helps with keeping the bot running on hosting platforms that require regular HTTP traffic. This server runs on port 8080 and responds with "I'm alive :D" to any incoming requests.
 
 ## Dependencies
 
@@ -95,8 +123,13 @@ The bot includes a simple HTTP server in `keep_alive.js` which helps with keepin
 - @distube/yt-dlp - Enhanced YouTube download plugin
 - dotenv - Environment variable management
 - chalk - Terminal text formatting for playback status
-- sodium-native - Encryption library for voice connections
 
 ## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Author
+
+Created by [Arthur](https://github.com/arthur875)
 
 This project is licensed under the MIT License.
