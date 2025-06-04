@@ -8,15 +8,20 @@ module.exports = {
         const { client } = interaction
         const distube = client.distube
 
+        await interaction.deferReply()
+
         try {
             await distube.skip(interaction)
-            await interaction.reply('Skipped to the next song!')
+            await interaction.editReply('Skipped to the next song!')
         } catch (error) {
             if (error.errorCode === 'NO_UP_NEXT') {
-                await interaction.reply('There are no more songs in the queue!')
+                await interaction.editReply('There are no more songs in the queue!')
+            }
+            if (error.errorCode === 'NO_QUEUE') {
+                await interaction.editReply(`Couldn't find current queue`)
             } else {
                 console.error('Error skipping song:', error)
-                await interaction.reply('An error occurred while trying to skip the song.')
+                await interaction.editReply('An error occurred while trying to skip the song.')
             }
         }
     }
