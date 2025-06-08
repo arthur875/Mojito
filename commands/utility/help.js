@@ -44,6 +44,8 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: 'Made with ❤️ | Use /help for this menu anytime', iconURL: 'attachment://botAvatar.png' });
 
-        await Interaction.reply({ embeds: [helpEmbed], files: [botAvatarAttachment, botAvatarWallpaperAttachment] });
+        await Interaction.reply({ 
+          embeds: [helpEmbed],
+          files: [botAvatarAttachment, botAvatarWallpaperAttachment] });
     }
 }

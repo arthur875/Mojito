@@ -26,10 +26,13 @@ module.exports = {
 
                 client.globalVolume = volume
                 
-                interaction.reply({ content: `volume set to: ${queue.volume}%`})
+                interaction.reply({ 
+                    content: `volume set to: ${queue.volume}%`})
 
             } catch(error) {
-                interaction.reply({content: `❌ There was an error during volume set: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`, flags: MessageFlags.Ephemeral })
+                interaction.reply({
+                    content: `❌ There was an error during volume set: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
+                    flags: MessageFlags.Ephemeral })
             }
             
         }

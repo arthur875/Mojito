@@ -15,7 +15,9 @@ module.exports = {
                 await interaction.editReply('▶️ resumed the current song')
             } catch (error) {
                 console.error(`Error in resume command: ${error}`)
-                await interaction.editReply({content: `❌ There was an error during resume: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`, flags: MessageFlags.Ephemeral})
+                await interaction.editReply({
+                    content: `❌ There was an error during resume: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
+                    flags: MessageFlags.Ephemeral})
             }
 
         }

@@ -21,35 +21,25 @@ module.exports = {
         
         // Get the user input
         const query = interaction.options.getString('query');
-        
-        try {
+          try {
             // Get the client from interaction
             const { client } = interaction;
             
             const distube = client.distube;
             const volume = client.globalVolume || 50; // Use the global volume or default to 50
-
-            queue = distube.getQueue(interaction)
             
             const vc = interaction.member.voice.channel;
             const options = {
                 member: interaction.member,
                 textChannel: interaction.channel,
-                interaction: interaction,
                 volume: volume,
             };
+            
             // First reply to the user
             await interaction.reply(`🎵 Searching for: **${query}**`);
             
-            // Play the song
+            // Play the song (don't pass interaction to avoid conflicts)
             await distube.play(vc, query, options);
-
-            
-
-        distube.on('finish', queue =>{
-            distube.voices.get(queue.id).leave();
-            queue.textChannel.send('✅ Queue finished')
-        })
 
             /*
             *********************************************
@@ -105,20 +95,19 @@ module.exports = {
 
 
             
-        
-        } catch (error) {
-            console.error(`Error in play command: ${error}`, MessageFlags.Ephemeral);
+          } catch (error) {
+            console.error(`Error in play command: ${error}`);
             
-            // If we've already replied, use followUp instead of editReply
+            // If we've already replied, use followUp instead of reply
             if (interaction.replied) {
                 await interaction.followUp({
                     content: `❌ Error playing that song: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             } else {
                 await interaction.reply({
                     content: `❌ Error playing that song: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             }
         }

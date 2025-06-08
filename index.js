@@ -65,9 +65,15 @@ for (const file of eventFiles){
     const filePath = path.join(eventsPath, file)
     const event = require(filePath)
     if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args))
+        client.once(event.name, (...args) => event.execute(...args));
+        if (event.distube) {
+            distube.once(event.name, (...args) => event.execute(...args));
+        }
     } else {
-        client.on(event.name, (...args) => event.execute(...args))
+        client.on(event.name, (...args) => event.execute(...args));
+        if (event.distube) {
+            distube.on(event.name, (...args) => event.execute(...args));
+        }
     }
 }
 client.login(token);

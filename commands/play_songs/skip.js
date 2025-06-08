@@ -19,9 +19,13 @@ module.exports = {
                 await interaction.editReply({content: 'There are no more songs in the queue!', flags: MessageFlags.Ephemeral})
             }
             else if (error.errorCode === 'NO_QUEUE') {
-                await interaction.editReply({content: `Couldn't find current queue`, flags: MessageFlags.Ephemeral})
+                await interaction.editReply({
+                    content: `Couldn't find current queue`,
+                    flags: MessageFlags.Ephemeral})
             } else {
-                await interaction.editReply({content: `❌ There was an error during skip: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`, flags: MessageFlags.Ephemeral})
+                await interaction.editReply({
+                    content: `❌ There was an error during skip: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
+                    flags: MessageFlags.Ephemeral})
             }
         }
     }

@@ -16,9 +16,13 @@ module.exports = {
             console.error(`Error in stop command: ${error}`)
             
             if (error.errorCode === 'NO_QUEUE') {
-                await interaction.editReply({content: `Couldn't find current queue`, flags: MessageFlags.Ephemeral})
+                await interaction.editReply({
+                    content: `Couldn't find current queue`,
+                    flags: MessageFlags.Ephemeral})
             } else {
-                await interaction.editReply({content: `❌ There was an error during stop: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`, flags: MessageFlags.Ephemeral})
+                await interaction.editReply({
+                    content: `❌ There was an error during stop: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
+                    flags: MessageFlags.Ephemeral})
             }
         }
     }
