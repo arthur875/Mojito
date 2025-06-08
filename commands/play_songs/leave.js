@@ -11,8 +11,11 @@ module.exports = {
             await interaction.deferReply()
 
             try {
-                await distube.voices.leave(interaction)
-                await interaction.editReply('👋 Left the voice channel!')
+                botVoiceChannel = interaction.guild.members.me.voice.channel;
+                if (!botVoiceChannel) {
+                    await distube.voices.leave(interaction)
+                    await interaction.editReply('👋 Left the voice channel!')
+                }
             } catch (error) {
                 console.error(`there was an error during the execution of this command: ${error}`)
                 await interaction.editReply('there was an error during the execution of leave', MessageFlags.Ephemeral)
