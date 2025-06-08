@@ -1,9 +1,11 @@
 {
   "name": "mojito",
-  "version": "1.0.0",
-  "description": "discord music bot",
+  "version": "1.0.0",  "description": "Discord music bot with slash commands - plays music from YouTube, Spotify, and SoundCloud",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "deploy": "node deploy.js",
+    "dev": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
