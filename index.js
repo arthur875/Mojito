@@ -377,9 +377,6 @@ distube
     .on('searchCancel', message => message.channel.send('❌ Search cancelled'))
     .on('searchNoResult', message => message.channel.send('❌ No results found'))
     .on('searchInvalidAnswer', message => message.channel.send('❌ Invalid response'))
-    .on('finish', queue =>{
-        distube.voices.get(queue.id).leave();
-        queue.textChannel.send('✅ Queue finished')
-    })
+
 
 client.login(token);

@@ -28,6 +28,8 @@ module.exports = {
             
             const distube = client.distube;
             const volume = client.globalVolume || 50; // Use the global volume or default to 50
+
+            queue = distube.getQueue(interaction)
             
             const vc = interaction.member.voice.channel;
             const options = {
@@ -41,6 +43,13 @@ module.exports = {
             
             // Play the song
             await distube.play(vc, query, options);
+
+            
+
+        distube.on('finish', queue =>{
+            distube.voices.get(queue.id).leave();
+            queue.textChannel.send('✅ Queue finished')
+        })
 
             /*
             *********************************************
@@ -93,6 +102,9 @@ module.exports = {
                 if (queue) progressListener(queue);
                 else clearInterval(progressInterval);
             }, 5000);
+
+
+            
         
         } catch (error) {
             console.error(`Error in play command: ${error}`, MessageFlags.Ephemeral);
