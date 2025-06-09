@@ -18,10 +18,13 @@ module.exports = {
                 content: 'You need to be in a voice channel!', 
             });
         }
-        
-        // Get the user input
+          // Get the user input
         const query = interaction.options.getString('query');
-          try {
+        
+        try {
+            // First reply to the user
+            await interaction.reply(`🎵 Searching for: **${query}**`);
+            
             // Get the client from interaction
             const { client } = interaction;
             
@@ -34,9 +37,6 @@ module.exports = {
                 textChannel: interaction.channel,
                 volume: volume,
             };
-            
-            // First reply to the user
-            await interaction.reply(`🎵 Searching for: **${query}**`);
             
             // Play the song (don't pass interaction to avoid conflicts)
             await distube.play(vc, query, options);
@@ -94,21 +94,17 @@ module.exports = {
             }, 5000);
 
 
-            
-          } catch (error) {
+              } catch (error) {
             console.error(`Error in play command: ${error}`);
             
-            // If we've already replied, use followUp instead of reply
-            if (interaction.replied) {
+            // Since we already replied on line 34, always use followUp
+            try {
                 await interaction.followUp({
                     content: `❌ Error playing that song: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
                     flags: MessageFlags.Ephemeral
                 });
-            } else {
-                await interaction.reply({
-                    content: `❌ Error playing that song: ${error.message ? error.message.slice(0, 1000) : 'Unknown error'}`,
-                    flags: MessageFlags.Ephemeral
-                });
+            } catch (followUpError) {
+                console.error('Failed to send follow-up message:', followUpError);
             }
         }
     }
