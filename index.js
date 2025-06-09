@@ -23,10 +23,7 @@ const distube = new DisTube(client, {
     plugins: [
         new SpotifyPlugin(),
         new SoundCloudPlugin(),
-        new YtDlpPlugin({
-            update: false,
-            debug: true
-        })
+        new YtDlpPlugin()
     ],
 });
 
