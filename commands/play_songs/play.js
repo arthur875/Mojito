@@ -43,7 +43,8 @@ module.exports = {
             *********************************************
             *               PROGRESS BAR                *
             *********************************************
-            */            let progressBar = ''
+            */            
+            let progressBar = ''
             let lastPercent = -1
             let trigger = false
             
@@ -108,10 +109,7 @@ module.exports = {
                     clearInterval(progressInterval);
                     client.progressIntervals.delete(interaction.guildId);
                 }
-                // Remove the listeners to prevent memory leaks
-                distube.removeListener('finishSong', cleanup);
-                distube.removeListener('finish', cleanup);
-                distube.removeListener('error', cleanup);
+
             };
 
             // Listen for events to clean up the interval
