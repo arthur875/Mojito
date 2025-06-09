@@ -51,6 +51,6 @@ module.exports = {
 
         await Interaction.reply({ 
           embeds: [helpEmbed],
-          files: [botAvatarAttachment, botAvatarWallpaperAttachment] });
+          files: [botAvatarAttachment, botAvatarWallpaperAttachment] } );
     }
 }
