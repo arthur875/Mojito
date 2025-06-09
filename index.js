@@ -27,6 +27,9 @@ const distube = new DisTube(client, {
     ],
 });
 
+// Increase max listeners to prevent warnings
+distube.setMaxListeners(20);
+
 // Global volume variable
 let volume = 50;
 

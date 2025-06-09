@@ -37,9 +37,10 @@ module.exports = {
                 textChannel: interaction.channel,
                 volume: volume,
             };
-            
-            // Play the song (don't pass interaction to avoid conflicts)
+              // Play the song (don't pass interaction to avoid conflicts)
+            console.log(`🔍 Attempting to play: ${query}`);
             await distube.play(vc, query, options);
+            console.log(`✅ Successfully started playing: ${query}`);
 
             /*
             *********************************************
@@ -84,14 +85,49 @@ module.exports = {
                     console.log(`[${chalk.yellowBright(new Date().toISOString())}] Playing: ${chalk.cyan(song.name)} | ${Math.floor(progress)}s/${duration}s (${percent}%)
                          \n${chalk.greenBright(progressBar)}`);
                 }
-            };
-            
+            };            // Clean up any existing progress intervals for this guild
+            if (client.progressIntervals) {
+                const existingInterval = client.progressIntervals.get(interaction.guildId);
+                if (existingInterval) {
+                    clearInterval(existingInterval);
+                    console.log('🧹 Cleared existing progress interval');
+                }
+            } else {
+                client.progressIntervals = new Map();
+            }
+
             // Log progress every 5 seconds
             const progressInterval = setInterval(() => {
                 const queue = distube.getQueue(interaction.guildId);
-                if (queue) progressListener(queue);
-                else clearInterval(progressInterval);
+                if (queue && queue.playing && queue.songs && queue.songs[0]) {
+                    progressListener(queue);
+                } else {
+                    console.log('🔄 Clearing progress interval - no active queue or song');
+                    clearInterval(progressInterval);
+                    client.progressIntervals.delete(interaction.guildId);
+                }
             }, 5000);
+
+            // Store the interval so we can clean it up later
+            client.progressIntervals.set(interaction.guildId, progressInterval);
+
+            // Clean up interval when song finishes or errors occur
+            const cleanup = () => {
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                    client.progressIntervals.delete(interaction.guildId);
+                    console.log('🧹 Progress interval cleaned up');
+                }
+                // Remove the listeners to prevent memory leaks
+                distube.removeListener('finishSong', cleanup);
+                distube.removeListener('finish', cleanup);
+                distube.removeListener('error', cleanup);
+            };
+
+            // Listen for events to clean up the interval
+            distube.once('finishSong', cleanup);
+            distube.once('finish', cleanup);
+            distube.once('error', cleanup);
 
 
               } catch (error) {
