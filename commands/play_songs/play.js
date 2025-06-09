@@ -43,13 +43,12 @@ module.exports = {
             *********************************************
             *               PROGRESS BAR                *
             *********************************************
-            */
-
-            let progressBar = ''
+            */            let progressBar = ''
             let lastPercent = -1
             let trigger = false
+            
             const progressListener = (queue) => {
-                if (queue.songs && queue.songs[0]) {
+                if (queue.songs?.[0]) {
                     const song = queue.songs[0];
                     const progress = queue.currentTime;
                     const duration = song.duration;
@@ -90,21 +89,21 @@ module.exports = {
                 }
             } else {
                 client.progressIntervals = new Map();
-            }// Log progress every 5 seconds
+            }
+              // Log progress every 5 seconds
             const progressInterval = setInterval(() => {
                 const queue = distube.getQueue(interaction.guildId);
-                if (queue && queue.playing && queue.songs && queue.songs[0]) {
+                if (queue?.playing && queue.songs?.[0]) {
                     progressListener(queue);
                 } else {
                     clearInterval(progressInterval);
                     client.progressIntervals.delete(interaction.guildId);
                 }
-            }, 5000);
-
-            // Store the interval so we can clean it up later
+            }, 5000);// Store the interval so we can clean it up later
             client.progressIntervals.set(interaction.guildId, progressInterval);
 
-            // Clean up interval when song finishes or errors occur            const cleanup = () => {
+            // Clean up interval when song finishes or errors occur
+            const cleanup = () => {
                 if (progressInterval) {
                     clearInterval(progressInterval);
                     client.progressIntervals.delete(interaction.guildId);
