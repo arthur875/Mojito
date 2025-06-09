@@ -3,6 +3,8 @@ module.exports = {
     distube: true,
     async execute(queue, song) {
         // Called when a song starts playing
-        queue.textChannel.send(`🎵 Now playing: **${song.name}** - \`${song.formattedDuration}\``);
+        if (queue.textChannel) {
+            queue.textChannel.send(`🎵 Now playing: **${song.name}** - \`${song.formattedDuration}\``);
+        }
     }
 }

@@ -19,6 +19,7 @@ module.exports = {
             });
         }
           // Get the user input
+          console.log('X')
         const query = interaction.options.getString('query');
         
         try {
@@ -27,18 +28,22 @@ module.exports = {
             
             // Get the client from interaction
             const { client } = interaction;
-            
-            const distube = client.distube;
+              const distube = client.distube;
             const volume = client.globalVolume || 50; // Use the global volume or default to 50
+            console.log('X')
             
             const vc = interaction.member.voice.channel;
+            console.log(`Voice channel: ${vc.name} (${vc.id})`);
+            
             const options = {
                 member: interaction.member,
                 textChannel: interaction.channel,
                 volume: volume,
-            };            // Play the song (don't pass interaction to avoid conflicts)
-            await distube.play(vc, query, options);
-
+            };
+            
+            // Play the song with timeout
+            distube.play(vc, query, options);
+            
             /*
             *********************************************
             *               PROGRESS BAR                *

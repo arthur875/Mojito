@@ -20,15 +20,30 @@ const client = new Client({
 
 const distube = new DisTube(client, {
     emitNewSongOnly: true,
+
     plugins: [
         new SpotifyPlugin(),
         new SoundCloudPlugin(),
-        new YtDlpPlugin()
+        new YtDlpPlugin({
+            update: false,
+            updateOnStart: false
+        })
     ],
 });
 
 // Increase max listeners to prevent warnings
 distube.setMaxListeners(20);
+
+// Enable DisTube debug mode
+distube.on('debug', (debug) => {
+    console.log(`[DisTube DEBUG] ${debug}`);
+});
+
+// Only keep essential event listeners
+distube.on('error', (channel, error) => {
+    console.log(`[DisTube ERROR] ${error.message}`);
+    console.log(`[DisTube ERROR] Stack: ${error.stack}`);
+});
 
 // Global volume variable
 let volume = 50;
