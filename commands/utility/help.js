@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const path = require('path');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -6,8 +7,12 @@ module.exports = {
         .setDescription('Provides the necessary documentation to use the bot'),
     async execute(Interaction) {
 
-        const botAvatarAttachment = new AttachmentBuilder('assets/images/bot_profile_image.png', { name: 'botAvatar.png' })
-        const botAvatarWallpaperAttachment = new AttachmentBuilder('assets/images/bot_profile_wallpaper_image.png', { name: 'botWallpaper.png' })
+        // Use absolute paths resolved from the project root
+        const botAvatarPath = path.join(__dirname, '..', '..', 'assets', 'images', 'bot_profile_image.png');
+        const botWallpaperPath = path.join(__dirname, '..', '..', 'assets', 'images', 'bot_profile_wallpaper_image.png');
+        
+        const botAvatarAttachment = new AttachmentBuilder(botAvatarPath, { name: 'botAvatar.png' })
+        const botAvatarWallpaperAttachment = new AttachmentBuilder(botWallpaperPath, { name: 'botWallpaper.png' })
         const helpEmbed = new EmbedBuilder()
             .setColor('DarkOrange')
             .setTitle('🎵 Mojito Music Bot Commands 🎵')
