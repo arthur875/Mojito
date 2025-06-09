@@ -85,7 +85,8 @@ module.exports = {
                     console.log(`[${chalk.yellowBright(new Date().toISOString())}] Playing: ${chalk.cyan(song.name)} | ${Math.floor(progress)}s/${duration}s (${percent}%)
                          \n${chalk.greenBright(progressBar)}`);
                 }
-            };            // Clean up any existing progress intervals for this guild
+            }; 
+            // Clean up any existing progress intervals for this guild
             if (client.progressIntervals) {
                 const existingInterval = client.progressIntervals.get(interaction.guildId);
                 if (existingInterval) {

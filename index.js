@@ -20,6 +20,10 @@ const client = new Client({
 
 const distube = new DisTube(client, {
     emitNewSongOnly: true,
+    leaveOnEmpty: false, // Don't leave when voice channel is empty
+    leaveOnFinish: false, // Don't auto-leave when queue finishes
+    leaveOnStop: false, // Don't auto-leave when stopped
+    savePreviousSongs: true, // Save previous songs
     plugins: [
         new SpotifyPlugin(),
         new SoundCloudPlugin(),
