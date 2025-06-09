@@ -95,15 +95,20 @@ module.exports = {
                 }
             } else {
                 client.progressIntervals = new Map();
-            }
-
-            // Log progress every 5 seconds
+            }            // Log progress every 5 seconds
             const progressInterval = setInterval(() => {
                 const queue = distube.getQueue(interaction.guildId);
                 if (queue && queue.playing && queue.songs && queue.songs[0]) {
                     progressListener(queue);
                 } else {
-                    console.log('🔄 Clearing progress interval - no active queue or song');
+                    console.log('🔄 Clearing progress interval - queue state changed');
+                    if (queue) {
+                        console.log(`Queue exists but: playing=${queue.playing}, songs=${queue.songs?.length}, stopped=${queue.stopped}`);
+                        console.log(`Voice connection: ${queue.voice?.connection?._state?.status}`);
+                        console.log(`Audio player: ${queue.voice?.audioPlayer?._state?.status}`);
+                    } else {
+                        console.log('No queue found for guild');
+                    }
                     clearInterval(progressInterval);
                     client.progressIntervals.delete(interaction.guildId);
                 }
