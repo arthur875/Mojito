@@ -36,7 +36,17 @@ module.exports = {
                 modeText = 'queue'
             }
 
-            interaction.reply(`set loop mode to: ${modeText}`)
+            interaction.reply({
+                embeds: [{
+                    color: 0x00ff00,
+                    title: '🔄 Loop Mode Updated',
+                    description: `Loop mode has been set to: **${modeText}**`,
+                    footer: {
+                        text: `Set by ${interaction.user.username}`,
+                        icon_url: interaction.user.displayAvatarURL()
+                    }
+                }]
+            })
 
         }
 }
