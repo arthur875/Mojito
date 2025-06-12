@@ -1,103 +1,145 @@
 # Mojito 🍹
 
-A feature-rich Discord music bot that plays music from YouTube, Spotify, and SoundCloud using modern slash commands.
+A feature-rich Discord music bot that brings high-quality music streaming to your Discord server. Built with modern Discord.js v14 and slash commands, Mojito supports multiple platforms and provides a seamless music experience.
 
 ![Bot Logo](assets/images/bot_profile_image.png)
 
-## Features
 
-- 🎵 **Multi-Platform Support**: Play music from YouTube, Spotify, and SoundCloud with seamless integration
-- 📋 **Queue Management**: Easily manage and view your playlist of songs
-- 🔄 **Flexible Loop Options**: Loop functionality planned for future updates
-- ⏯️ **Comprehensive Playback Controls**: Full suite of commands (play, pause, resume, skip, stop)
-- 🎚️ **Volume Control**: Adjust volume from 0-100% to suit your environment
-- 🖥️ **Visual Playback Tracking**: Real-time progress bar in console shows song position
-- ⚡ **Modern Slash Commands**: Uses Discord's latest slash command system for better user experience
-- 🎨 **Rich Embeds**: Beautiful Discord embeds with thumbnails and formatting
 
-## Commands
+## Features ✨
 
-### Slash Commands
-All bot functionality is accessed through Discord's modern slash command system:
+### 🎵 **Multi-Platform Music Streaming**
+- **YouTube**: Direct links, search queries, and playlists
+- **Spotify**: Track, and playlist support with seamless integration
+- **SoundCloud**: Track and playlist compatibility
 
-- `/play [query]` - Plays a song from YouTube, Spotify, or SoundCloud
-- `/skip` - Skips to the next song
-- `/stop` - Stops playback and clears the queue
-- `/pause` - Pauses the current song
-- `/resume` - Resumes playback if paused
-- `/leave` - Disconnects the bot from voice channel
-- `/queue` - Shows the current song queue
-- `/volume [intensity]` - Sets the volume (0-100)
-- `/help` - Provides documentation on how to use the bot with rich embed visuals
+### 🎛️ **Advanced Playback Controls**
+- **Full Control Suite**: Play, pause, resume, skip, stop functionality
+- **Volume Management**: Precise volume control (0-100%)
+- **Loop System**: Complete loop functionality with multiple modes:
+  - Mode 0: Loop disabled
+  - Mode 1: Single song repeat
+  - Mode 2: Queue/playlist repeat
+- **Queue Management**: View, manage, and navigate your playlist
 
-## Setup
+### ⚡ **Modern Discord Integration**
+- **Slash Commands**: Full Discord slash command implementation
+- **Rich Embeds**: Beautiful, interactive Discord embeds with bot branding
+- **Real-time Updates**: Live playback status and progress tracking
+- **Visual Feedback**: Comprehensive user interface with thumbnails and formatting
 
-1. Clone the repository:
-   ```
+### 🖥️ **Advanced Console Features**
+- **Real-time Progress Bars**: Visual song progress tracking in console
+- **Debug Logging**: Comprehensive DisTube debug information
+- **Status Monitoring**: Connection status and error reporting
+- **Command Logging**: Timestamped command execution tracking
+
+## Commands 🎮
+
+### Music Playback
+- `/play [query]` - Stream music from YouTube, Spotify, or SoundCloud
+- `/pause` - Pause the current track
+- `/resume` - Resume paused playback
+- `/skip` - Skip to the next song in queue
+- `/stop` - Stop playback and clear the entire queue
+- `/leave` - Disconnect bot from voice channel
+
+### Queue & Loop Management
+- `/queue` - Display current song queue with track information
+- `/loop [mode]` - Set loop mode (0: off, 1: song, 2: queue)
+
+### Audio Control
+- `/volume [0-100]` - Adjust playback volume
+
+### Utility
+- `/help` - Comprehensive help documentation with rich embeds
+
+## Setup & Installation 🚀
+
+### Prerequisites
+- Node.js v16.9.0 or higher
+- Discord Bot Token and Client ID
+- Git (for cloning the repository)
+
+### Installation Steps
+
+1. **Clone the Repository**
+   ```bash
    git clone https://github.com/arthur875/Mojito.git
    cd Mojito
    ```
 
-2. Install dependencies:
+2. **Install Dependencies**
    ```bash
    npm install
    ```
 
-3. Add useful npm scripts (optional) by updating your `package.json`:
-   ```json
-   "scripts": {
-     "start": "node index.js",
-     "deploy": "node deploy.js",
-     "dev": "node index.js"
-   }
-   ```
-
-4. Create a `.env` file with the following:
+3. **Environment Configuration**
+   Create a `.env` file in the root directory:
    ```env
    TOKEN=your_discord_bot_token
    clientId=your_discord_client_id
    ```
-   > **Security Note**: Never share your `.env` file or commit it to version control. The `.env` file variables are case-sensitive. Make sure to use `clientId` exactly as shown.
+   > ⚠️ **Security Notice**: Keep your `.env` file private and never commit it to version control
    
-5. Make sure you have the following directory structure:
-   ```
-   assets/
-     images/
-       bot_profile_image.png
-       bot_profile_wallpaper_image.png
-   commands/
-     play_songs/
-       leave.js
-       pause.js
-       play.js
-       queue.js
-       resume.js
-       skip.js
-       stop.js
-       volume.js
-     utility/
-       help.js
-   events/
-     interactionCreate.js
-     ready.js
-   ```
-   > The images are needed for rich embed visuals in help commands.
-
-6. Deploy slash commands to your Discord server:
+4. **Deploy Slash Commands**
    ```bash
    npm run deploy
-   # or
-   node deploy.js
    ```
 
-7. Start the bot:
+5. **Start the Bot**
    ```bash
    npm start
-   # or
-   node index.js
    ```
-   
-## Console Features
+
+### Npm Scripts
+The project includes the following pre-configured scripts:
+```json
+{
+  "start": "node index.js",
+  "deploy": "node deploy.js", 
+  "dev": "node index.js"
+}
+```## Project Architecture 🏗️
+
+### Directory Structure
+```
+Mojito/
+├── assets/
+│   └── images/                 # Bot profile and wallpaper images
+├── commands/
+│   ├── play_songs/            # Music control commands
+│   │   ├── leave.js           # Voice channel disconnect
+│   │   ├── pause.js           # Pause playback
+│   │   ├── play.js            # Play music from various sources
+│   │   ├── queue.js           # Display current queue
+│   │   ├── repeat.js          # Loop functionality (loop command)
+│   │   ├── resume.js          # Resume paused playback
+│   │   ├── skip.js            # Skip current track
+│   │   ├── stop.js            # Stop and clear queue
+│   │   └── volume.js          # Volume control
+│   └── utility/
+│       └── help.js            # Rich help documentation
+├── events/
+│   ├── addSong.js             # Song added to queue handler
+│   ├── disconnect.js          # Voice disconnect handler
+│   ├── error.js               # Error handling
+│   ├── finish.js              # Playback finish handler
+│   ├── finishSong.js          # Individual song finish handler
+│   ├── interactionCreate.js   # Slash command handler
+│   ├── playSong.js            # Song playback handler
+│   └── ready.js               # Bot ready event
+├── deploy.js                  # Command deployment script
+├── index.js                   # Main bot file
+├── keep_alive.js              # Hosting helper (port 8080)
+└── package.json               # Dependencies and scripts
+```
+
+### Core Components
+- **DisTube Integration**: Advanced music streaming with multi-platform support
+- **Command Handler**: Dynamic slash command loading and execution
+- **Event System**: Comprehensive event handling for music playback
+- **Rich Embeds**: Custom Discord embeds with bot branding
 
 The bot includes a real-time console display showing:
 
@@ -113,14 +155,13 @@ The bot includes a real-time console display showing:
 - ✅ Multi-platform music playback (YouTube, Spotify, SoundCloud)
 - ✅ Real-time console progress tracking
 - ✅ Volume control and queue management
+- ✅ Loop functionality with multiple modes (off, song, queue)
 - ✅ Rich Discord embeds with bot images
 
 ### ⚠️ Known Limitations:
-- ⚠️ Loop functionality is referenced in help but not implemented
 - ⚠️ No persistent settings or database storage
 
 ### 🔄 Future Enhancements:
-- Loop modes (off, song, queue, once)
 - Playlist saving/loading
 - Music filters and effects
 - Web dashboard interface
