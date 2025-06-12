@@ -100,41 +100,7 @@ The project includes the following pre-configured scripts:
   "deploy": "node deploy.js", 
   "dev": "node index.js"
 }
-```## Project Architecture 🏗️
-
-### Directory Structure
 ```
-Mojito/
-├── assets/
-│   └── images/                 # Bot profile and wallpaper images
-├── commands/
-│   ├── play_songs/            # Music control commands
-│   │   ├── leave.js           # Voice channel disconnect
-│   │   ├── pause.js           # Pause playback
-│   │   ├── play.js            # Play music from various sources
-│   │   ├── queue.js           # Display current queue
-│   │   ├── repeat.js          # Loop functionality (loop command)
-│   │   ├── resume.js          # Resume paused playback
-│   │   ├── skip.js            # Skip current track
-│   │   ├── stop.js            # Stop and clear queue
-│   │   └── volume.js          # Volume control
-│   └── utility/
-│       └── help.js            # Rich help documentation
-├── events/
-│   ├── addSong.js             # Song added to queue handler
-│   ├── disconnect.js          # Voice disconnect handler
-│   ├── error.js               # Error handling
-│   ├── finish.js              # Playback finish handler
-│   ├── finishSong.js          # Individual song finish handler
-│   ├── interactionCreate.js   # Slash command handler
-│   ├── playSong.js            # Song playback handler
-│   └── ready.js               # Bot ready event
-├── deploy.js                  # Command deployment script
-├── index.js                   # Main bot file
-├── keep_alive.js              # Hosting helper (port 8080)
-└── package.json               # Dependencies and scripts
-```
-
 ### Core Components
 - **DisTube Integration**: Advanced music streaming with multi-platform support
 - **Command Handler**: Dynamic slash command loading and execution
