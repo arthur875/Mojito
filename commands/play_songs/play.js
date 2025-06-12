@@ -18,8 +18,7 @@ module.exports = {
                 content: 'You need to be in a voice channel!', 
             });
         }
-          // Get the user input
-          console.log('X')
+        
         const query = interaction.options.getString('query');
         
         try {

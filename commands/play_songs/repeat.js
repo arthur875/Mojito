@@ -1,31 +1,42 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('repeat')
-        .setDescription('Repeat the current song or queue')
+        .setName('loop')
+        .setDescription('loops a song or a queue')
+        
         .addNumberOption(option => 
             option
-                .setName('repeat_option')
-                .setDescription('set the repeat option: none = 0, song = 1, queue = 2')
-                .setRequired(true)
-                .setMaxValue(2)
-                .setMinValue(0)                
+                  .setName('mode')
+                  .setDescription('set the mode to the following options:{mode = 0 is disabled, mode = 1 is song, mode = 2 is queue}')
+                  .setMaxValue(2)
+                  .setMinValue(0)
+                  .setRequired(true)
         ),
-    async execute(interaction) {
-        const { client } = interaction
-        const distube = client.distube
+        async execute(interaction) {
+            const { client } = interaction
+            const distube  = client.distube
 
-        const repeatOption = interaction.options.getNumber('repeat_option')
-        const queue = distube.getQueue(interaction.guild.id)
+            const queue = distube.getQueue(interaction)
 
-        if (!queue) {
-            return interaction.reply({content: 'No music is currently playing!'})
+            if (!queue) {
+                return interaction.reply({ content: 'There is no music playing in this server!', flags: MessageFlags.Ephemeral })
+            }
+
+            let mode = interaction.options.getNumber('mode')
+
+            distube.setRepeatMode(interaction, mode)
+
+            let modeText
+            if (mode === 0) {
+                modeText = 'disabled'
+            } else if (mode === 1) {
+                modeText = 'song'
+            } else {
+                modeText = 'queue'
+            }
+
+            interaction.reply(`set loop mode to: ${modeText}`)
+
         }
-
-        distube.setRepeatMode(queue, repeatOption)
-        const modeNames = ['none', 'song', 'queue']
-        
-        interaction.reply({content: `Repeat mode set to: ${modeNames[repeatOption]}`})
-    }
 }
