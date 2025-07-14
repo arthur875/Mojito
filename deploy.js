@@ -51,17 +51,19 @@ const rest = new REST().setToken(token);
 		console.log(`Started refreshing ${commands.length} application (/) commands globally.`);
 
 		// The put method is used to fully refresh all commands globally with the current set
+		/*
 		const data = await rest.put(
 			Routes.applicationCommands(clientId),
 			{ body: commands },
 		);
-		/*
+		*/
+		
 		const guildId = '1117160719608184903'; // Add this to your .env file
 		const data = await rest.put(
     		Routes.applicationGuildCommands(clientId, guildId),
     		{ body: commands },
 		);
-		*/
+		
 		console.log(`Successfully reloaded ${data.length} application (/) commands globally.`);
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!

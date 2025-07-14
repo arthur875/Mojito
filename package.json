@@ -1,6 +1,7 @@
 {
   "name": "mojito",
-  "version": "1.0.0",  "description": "Discord music bot with slash commands - plays music from YouTube, Spotify, and SoundCloud",
+  "version": "1.0.0",
+  "description": "Discord music bot with slash commands - plays music from YouTube, Spotify, and SoundCloud",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -24,6 +25,7 @@
     "@distube/soundcloud": "^2.0.4",
     "@distube/spotify": "^2.0.2",
     "@distube/yt-dlp": "^2.0.1",
+    "@distube/ytpl": "^1.2.3",
     "chalk": "^5.4.1",
     "discord.js": "^14.19.3",
     "distube": "^5.0.7",

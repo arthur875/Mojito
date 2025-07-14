@@ -14,6 +14,7 @@ module.exports = {
                   .setRequired(true)
         ),
         async execute(interaction) {
+            try {
             const { client } = interaction
             const distube  = client.distube
 
@@ -38,15 +39,25 @@ module.exports = {
 
             interaction.reply({
                 embeds: [{
-                    color: 0x00ff00,
-                    title: '🔄 Loop Mode Updated',
-                    description: `Loop mode has been set to: **${modeText}**`,
-                    footer: {
-                        text: `Set by ${interaction.user.username}`,
-                        icon_url: interaction.user.displayAvatarURL()
-                    }
+                color: 0x00ff00,
+                title: '🔄 Loop Mode Updated',
+                description: `Loop mode has been set to: **${modeText}**`,
+                footer: {
+                    text: `Set by ${interaction.user.username}`,
+                    icon_url: interaction.user.displayAvatarURL()
+                }
                 }]
             })
+            } catch (error) {
+            console.error(error)
+            interaction.reply({ content: 'An error occurred while setting the loop mode.', flags: MessageFlags.Ephemeral })
+                        // Check for specific ffmpeg exit code 8
+            
+            if (error.message && error.message.includes('ffmpeg') && error.message.includes('exit code 8')) {
+                console.log('[DisTube ERROR] Detected ffmpeg exit code 8');
 
+                await distube.setRepeatMode(interaction, mode)
+            }
+            }
         }
 }

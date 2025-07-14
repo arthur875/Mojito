@@ -18,18 +18,20 @@ module.exports = {
                 content: 'You need to be in a voice channel!', 
             });
         }
-        
+
+        // Get the client from interaction
+        const { client } = interaction;
+        const distube = client.distube;
         const query = interaction.options.getString('query');
+        const volume = client.globalVolume || 50; // Use the global volume or default to 50
         
         try {
             // First reply to the user
             await interaction.reply(`🎵 Searching for: **${query}**`);
             
-            // Get the client from interaction
-            const { client } = interaction;
-              const distube = client.distube;
-            const volume = client.globalVolume || 50; // Use the global volume or default to 50
-            console.log('X')
+
+           
+            
             
             const vc = interaction.member.voice.channel;
             console.log(`Voice channel: ${vc.name} (${vc.id})`);
@@ -125,6 +127,21 @@ module.exports = {
               } catch (error) {
             console.error(`Error in play command: ${error}`);
             
+            // Check for specific ffmpeg exit code 8
+            if (error.message && error.message.includes('ffmpeg') && error.message.includes('exit code 8')) {
+                console.log('[DisTube ERROR] Detected ffmpeg exit code 8');
+                const vc = interaction.member.voice.channel;
+                const query = interaction.options.getString('query');
+                
+                const options = {
+                    member: interaction.member,
+                    textChannel: interaction.channel,
+                    volume: volume,
+                };
+
+                 distube.play(vc, query, options);
+            }
+            
             // Since we already replied on line 34, always use followUp
             try {
                 await interaction.followUp({
@@ -135,5 +152,6 @@ module.exports = {
                 console.error('Failed to send follow-up message:', followUpError);
             }
         }
+        
     }
 }
