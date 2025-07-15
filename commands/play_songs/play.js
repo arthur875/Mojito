@@ -23,7 +23,7 @@ module.exports = {
         const { client } = interaction;
         const distube = client.distube;
         const query = interaction.options.getString('query');
-        const volume = client.globalVolume || 50; // Use the global volume or default to 50
+        const volume = client.globalVolumes.get(interaction.guildId) ?? 50;
         
         try {
             // First reply to the user

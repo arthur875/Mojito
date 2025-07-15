@@ -41,16 +41,16 @@ distube.on('debug', (debug) => {
 
 // Only keep essential event listeners
 distube.on('error', (channel, error) => {
-    console.log(`[DisTube ERROR] ${error.message}`);
-    console.log(`[DisTube ERROR] Stack: ${error.stack}`);
+    console.log(`[DisTube ERROR] ${error.message}`)
+    console.log(`[DisTube ERROR] Stack: ${error.stack}`)
 });
 
 // Global volume variable
-let volume = 50;
+let volume = 50
 
 // Make these instances accessible to slash commands
-client.distube = distube;
-client.globalVolume = volume;
+client.distube = distube
+client.globalVolumes = new Collection()
 /*
 *********************************************
 *               SLASH COMMANDS              *

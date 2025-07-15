@@ -8,7 +8,7 @@ module.exports = {
             const { client } = interaction
             const distube = client.distube
             
-            queue = distube.getQueue(interaction)
+            const queue = distube.getQueue(interaction)
             if (!queue) return interaction.reply('Nothing is playing!')
 
             await interaction.reply(

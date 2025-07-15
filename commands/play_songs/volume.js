@@ -18,13 +18,13 @@ module.exports = {
 
             try {
 
-                const { client } = interaction
+                const { client, guildId } = interaction
 
                 const queue = client.distube.getQueue(interaction)
 
                 queue.setVolume(volume)
 
-                client.globalVolume = volume
+                client.globalVolumes.set(guildId, volume)
                 
                 interaction.reply({ 
                     content: `volume set to: ${queue.volume}%`})

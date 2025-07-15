@@ -7,7 +7,7 @@ module.exports = {
         async execute(interaction) {
             
             const { client } = interaction
-            distube = client.distube
+            const distube = client.distube
 
             await interaction.deferReply()            
             try {
