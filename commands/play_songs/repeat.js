@@ -17,14 +17,13 @@ module.exports = {
             try {
             const { client } = interaction
             const distube  = client.distube
-
             const queue = distube.getQueue(interaction)
 
             if (!queue) {
                 return interaction.reply({ content: 'There is no music playing in this server!', flags: MessageFlags.Ephemeral })
             }
 
-            let mode = interaction.options.getNumber('mode')
+            const mode = interaction.options.getNumber('mode')
 
             distube.setRepeatMode(interaction, mode)
 
@@ -50,14 +49,12 @@ module.exports = {
             })
             } catch (error) {
             console.error(error)
-            interaction.reply({ content: 'An error occurred while setting the loop mode.', flags: MessageFlags.Ephemeral })
-                        // Check for specific ffmpeg exit code 8
-            
-            if (error.message && error.message.includes('ffmpeg') && error.message.includes('exit code 8')) {
-                console.log('[DisTube ERROR] Detected ffmpeg exit code 8');
-
-                await distube.setRepeatMode(interaction, mode)
-            }
+                if (error.errorCode === "NO_QUEUE") {
+                    return interaction.reply({ content: "❌ No song is currently playing to loop!", flags: MessageFlags.Ephemeral });
+                } else {
+                    console.error(`Error in loop command: ${error}`);
+                    return interaction.reply({ content: `❌ An unexpected error occurred: ${error.message}`, flags: MessageFlags.Ephemeral });
+                }
             }
         }
 }

@@ -49,10 +49,17 @@ module.exports = {
             // Use a self-invoking async function to add the rest of the songs in the background
             // without blocking the main thread. This prevents the bot from being unresponsive.
             (async () => {
+                let retries = 3
                 for (const song of songs) {
-                    // We await each call inside this function to ensure they are added serially and reliably,
-                    // preventing race conditions that can occur with rapid, un-awaited calls.
-                    await distube.play(voiceChannel, song.url, { member: interaction.member, textChannel: interaction.channel });
+                    while(retries > 0) {
+                        try {
+                            await distube.play(voiceChannel, song.url, { member: interaction.member, textChannel: interaction.channel });
+                            break
+                        } catch (error) {
+                            retries--
+                            if(retries == 0) throw error
+                        }
+                    }
                 }
                 // Once all songs are added, send a confirmation.
                 await interaction.followUp(`✅ Successfully added all ${songs.length + 1} songs from the playlist to the queue!`);
