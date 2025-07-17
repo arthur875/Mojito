@@ -45,9 +45,6 @@ distube.on('error', (channel, error) => {
     console.log(`[DisTube ERROR] Stack: ${error.stack}`)
 });
 
-// Global volume variable
-let volume = 50
-
 // Make these instances accessible to slash commands
 client.distube = distube
 client.globalVolumes = new Collection()
